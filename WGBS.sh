@@ -1,27 +1,22 @@
 #!/usr/bin/bash
 
-## 这里是整理samplelist
-ls ../rawdata/*_1.fq* >> tmp1
-ls ../rawdata/*_2.fq* >> tmp2
-ls ../rawdata/*_1.fq*|while read i; do tmp=${i##*data/}; echo ${tmp%%_FKDL*} >> tmp3 ;done
-paste tmp1 tmp2 tmp3 > sample_list
-
-rm *tmp*
-
 help() {
     echo "Usage:"
     echo "test.sh [-f forward_fq] [-r reverse_fq] [-g reference]"
     echo "Description:"
     echo "-f forward_fq,the path of forward_fq,fq.gz also can be use."
     echo "-r reverse_fq,the path of reverse_fq,fq.gz also can be use."
+    echo "-n sample name"
     echo "-g the path of reference genome"
+    
     exit -1
 }
 
-while getopts 'f:r:g:' OPT; do
+while getopts 'f:r:n:g:' OPT; do
     case $OPT in
         f) forward_fq="$OPTARG";;
         r) reverse_fq="$OPTARG";;
+        n) sample_name="$OPTARG";;
         g) reference="$OPTARG";;
         h) help;;
         ?) help;;
@@ -44,9 +39,6 @@ for  i in ${folder[*]} ; do
   fi
 done
 
-sample=$(basename $forward_fq)
-echo $sample
-samplename=${sample%%_1.fq.gz}
 
 ## 去接头前指控
 # fastqc -o ../fastqc $forward_fq $reverse_fq
