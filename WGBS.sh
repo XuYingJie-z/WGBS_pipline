@@ -1,5 +1,13 @@
 #!/usr/bin/bash
 
+## 这里是整理samplelist
+ls ../rawdata/*_1.fq* >> tmp1
+ls ../rawdata/*_2.fq* >> tmp2
+ls ../rawdata/*_1.fq*|while read i; do tmp=${i##*data/}; echo ${tmp%%_FKDL*} >> tmp3 ;done
+paste tmp1 tmp2 tmp3 > sample_list
+
+rm *tmp*
+
 help() {
     echo "Usage:"
     echo "test.sh [-f forward_fq] [-r reverse_fq] [-g reference]"
