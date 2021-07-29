@@ -16,7 +16,7 @@ while getopts 'f:r:n:g:' OPT; do
     case $OPT in
         f) forward_fq="$OPTARG";;
         r) reverse_fq="$OPTARG";;
-        n) sample_name="$OPTARG";;
+        n) samplename="$OPTARG";;
         g) reference="$OPTARG";;
         h) help;;
         ?) help;;
@@ -31,7 +31,7 @@ fi
 
 ## creat folder
 
-#folder=(rawdata fastqc cutadapt trim mapping call_site conversion_rate_call_site  conversion_rate_mapping)
+folder=(rawdata fastqc cutadapt trim mapping call_site conversion_rate_call_site  conversion_rate_mapping)
 for  i in ${folder[*]} ; do
   if [ ! -d ../$i ]; then
     mkdir ../$i
@@ -59,7 +59,7 @@ bismark_methylation_extractor --paired-end --comprehensive --output  ../conversi
 
 
 ## 比对去重call位点
-bismark --genome /public1/home/sc60357/reference/human/GRCh38.p13_Release_36  -1 ../trim/${samplename}_trim_1.fq.gz -2 ../trim/${samplename}_trim_2.fq.gz --path_to_bowtie2 /public1/home/sc60357/miniconda3/envs/python3/bin/  -o ../mapping 
+bismark --un --genome /public1/home/sc60357/reference/human/GRCh38.p13_Release_36  -1 ../trim/${samplename}_trim_1.fq.gz -2 ../trim/${samplename}_trim_2.fq.gz --path_to_bowtie2 /public1/home/sc60357/miniconda3/envs/python3/bin/  -o ../mapping 
 
 deduplicate_bismark --paired --outfile ${samplename}  --output_dir  ../mapping  ../mapping/${samplename}_trim_1_bismark_bt2_pe.bam
 
